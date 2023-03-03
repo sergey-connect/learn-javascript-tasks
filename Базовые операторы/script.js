@@ -1,15 +1,20 @@
 //Task 1
+/*
 let a = 1, b = 1;
 
 let c = ++a; // ? c = 2
 let d = b++; // ? возвращается d = 1, b увеличивается на еденицу.
+*/
 
 //Task 2
+/*
 let a = 2;
 
 let x = 1 + (a *= 2); // a = 4, x = 5.
+*/
 
 //Task 3
+/*
 "" + 1 + 0 // "10"
 "" - 1 + 0 //  -1
 true + false // 1
@@ -24,6 +29,7 @@ true + false // 1
 null + 1 // 1
 undefined + 1 // NaN
 " \t \n" - 2 // -2
+*/
 
 //Task 4
 let a = prompt("Первое число?", 1);
