@@ -52,3 +52,26 @@ let generator = pseudoRandom(1);
 console.log((generator.next().value)); // 16807
 console.log((generator.next().value)); // 282475249
 console.log((generator.next().value)); // 1622650073
+
+//Алфавит
+
+function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) yield i;
+}
+
+function* generateAlphabet() {
+  // A..Z
+  yield* generateSequence(65, 90);
+
+  // a..z
+  yield* generateSequence(97, 122);
+
+}
+
+let str = '';
+
+for (let code of generateAlphabet()) {
+  str += String.fromCharCode(code);
+}
+
+console.log(str.split('')); // A..Za..z
