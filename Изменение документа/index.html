@@ -1,0 +1,354 @@
+<!-- createTextNode vs innerHTML vs textContent
+важность: 5
+У нас есть пустой DOM-элемент elem и строка text.
+
+Какие из этих 3-х команд работают одинаково?
+
+elem.append(document.createTextNode(text))
+elem.innerHTML = text
+elem.textContent = text -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            border: 1px solid black;
+            padding: 3px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #E6E6E6;
+        }
+
+        .today {
+            background-color: #c8ff00
+        }
+
+        .min {
+            color: green;
+        }
+
+        .hour {
+            color: red;
+        }
+
+        .sec {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="elem"></div>
+    text
+
+    <ol id="elem1">
+        <li>Привет</li>
+        <li>Мир</li>
+    </ol>
+
+    <table id="table">
+        aaa
+        <tr>
+            <td>Тест</td>
+        </tr>
+    </table>
+
+    <p>Создайте список</p>
+    важность: 4
+    <div>Напишите интерфейс для создания списка.
+
+        Для каждого пункта:
+
+        Запрашивайте содержимое пункта у пользователя с помощью prompt.
+        Создавайте элемент li и добавляйте его к ul.
+        Продолжайте до тех пор, пока пользователь не отменит ввод (нажатием клавиши Esc или введя пустую
+        строку).
+        Все элементы должны создаваться динамически.
+
+        Если пользователь вводит HTML-теги, они должны обрабатываться как текст.</div>
+
+    <ul class="list">
+
+    </ul>
+
+    <div id="container"></div>
+
+    <div id="calender"></div>
+
+    <div id="clock"></div>
+
+    <ul id="ul">
+        <li id="one">1</li>
+        <li id="two">4</li>
+    </ul>
+
+    <table id="sort">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John</td>
+                <td>Smith</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Pete</td>
+                <td>Brown</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>Ann</td>
+                <td>Lee</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>...</td>
+                <td>...</td>
+                <td>...</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+<script>
+    let text = '<b>string</b>'
+    // elem.append(document.createTextNode(text))
+    // elem.innerHTML = text
+    elem.textContent = text
+
+    function clear(elem1) { /* ваш код */
+        let elements = elem1.querySelectorAll('li')
+        elements.forEach(element => {
+            element.remove()
+        });
+    }
+
+    clear(elem1); // очищает список
+
+    // alert(table); // таблица, как и должно быть
+
+    table.remove();
+    // почему в документе остался текст "ааа"?
+
+
+    const list = document.querySelector('.list')
+
+    function addListItem() {
+        let listItemText = prompt('Введите пункт списка')
+        if (listItemText) {
+            let listItem = document.createElement('li')
+            listItem.textContent = listItemText
+            list.append(listItem)
+            addListItem()
+        } else return
+    }
+
+    // addListItem()
+
+    let data = {
+        "Рыбы": {
+            "форель": {},
+            "лосось": {}
+        },
+
+        "Деревья": {
+            "Огромные": {
+                "секвойя": {},
+                "дуб": {}
+            },
+            "Цветковые": {
+                "яблоня": {},
+                "магнолия": {}
+            }
+        }
+    };
+
+
+    let container = document.getElementById('container');
+    createTree(container, data); // создаёт дерево в контейнере
+
+    function createTree(cont, tree) {
+        if (!tree) return
+        let list = document.createElement('ul')
+        for (let item in tree) {
+            list.append(createItem(item))
+            if (typeof tree[item] === 'object') {
+                let listInside = document.createElement('ul')
+                for (let insideItem in tree[item]) {
+                    listInside.append(createItem(insideItem))
+                    list.append(listInside)
+                    if (typeof tree[item][insideItem] === 'object') {
+                        let listInside2 = document.createElement('ul')
+                        for (let insideItem2 in tree[item][insideItem]) {
+                            listInside2.append(createItem(insideItem2))
+                            listInside.append(listInside2)
+                        }
+                    }
+                }
+            }
+        }
+        cont.append(list)
+    }
+
+    function createList(item) {
+        let listItem = document.createElement('ul')
+        listItem.innerHTML = item
+        return listItem
+    }
+
+    function createItem(item) {
+        let listItem = document.createElement('li')
+        listItem.innerHTML = item
+        return listItem
+    }
+
+
+    //===========================
+    const cal = document.getElementById('calender')
+
+
+
+    function createCalendar(elem, year, month) {
+        let table = document.createElement('table')
+        let insideTable = `<tр><th>'пн'</th><th>'вт'</th><th>'ср'</th><th>'чт'</th><th>'пт'</th><th>'сб'</th><th>'вс'</th></tr><tr>`
+        let d = new Date(year, month - 1)
+
+        for (let i = 0; i < getDay(d); i++) {
+            insideTable += '<td></td>';
+        }
+
+        let now = new Date()
+
+
+
+        while (d.getMonth() == month - 1) {
+            insideTable += '<td>' + d.getDate() + '</td>';
+
+            if (getDay(d) % 7 == 6) { // вс, последний день - перевод строки
+                insideTable += '</tr><tr>';
+            }
+
+            d.setDate(d.getDate() + 1);
+        }
+
+        // добить таблицу пустыми ячейками, если нужно
+        // 29 30 31 * * * *
+        if (getDay(d) != 0) {
+            for (let i = getDay(d); i < 7; i++) {
+                insideTable += '<td></td>';
+            }
+        }
+
+        // закрыть таблицу
+        insideTable += '</tr></table>';
+
+        table.innerHTML = insideTable
+        elem.append(table)
+
+        if (now.getFullYear() === year && now.getMonth() + 1 === month) {
+            let listTD = table.querySelectorAll('td')
+            console.log(listTD.forEach(a => Number(a.textContent) === now.getDate() ? a.classList.add('today') : console.log()))
+        }
+    }
+
+    function getDay(date) { // получить номер дня недели, от 0 (пн) до 6 (вс)
+        let day = date.getDay();
+        if (day == 0) day = 7; // сделать воскресенье (0) последним днем
+        return day - 1;
+    }
+
+    createCalendar(cal, 2023, 8)
+
+    //===============
+    const clock = document.getElementById('clock')
+
+    let h = document.createElement('span')
+    h.classList.add('hour')
+    h.innerHTML = 'hh'
+
+    let m = document.createElement('span')
+    m.classList.add('min')
+    m.innerHTML = 'mm'
+
+    let s = document.createElement('span')
+    s.classList.add('sec')
+    s.innerHTML = 'ss'
+
+    let br = document.createElement('br')
+
+    let start = document.createElement('button')
+    start.textContent = 'Start'
+
+    let stop = document.createElement('button')
+    stop.textContent = 'Stop'
+
+    let interval;
+
+
+
+    function updateTime() {
+        let now = new Date()
+        h.innerHTML = now.getHours() < 10 ? '0' + now.getHours() : now.getHours();
+        m.innerHTML = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
+        s.innerHTML = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+    }
+
+    start.addEventListener('click', function () {
+        interval = setInterval(updateTime, 1000)
+        updateTime()
+    })
+
+    stop.addEventListener('click', function () {
+        clearInterval(interval)
+    })
+
+    clock.append(h, ':', m, ':', s, br, start, stop)
+
+    //==============
+
+    let ul = document.getElementById('ul')
+
+    let newLi = document.createElement('li')
+    newLi.innerHTML = '<li>2</li><li>3</li>'
+
+    ul.firstChild.nextSibling.after(newLi)
+
+    // one.insertAdjacentHTML('afterend', '<li>2</li><li>3</li>');
+
+    //=============
+
+    let tableS = document.getElementById('sort')
+    let tBody = tableS.querySelector('tbody')
+    let rows = tBody.querySelectorAll('tr')
+
+    let sortedArray = Array.from(rows).sort(SortArray)
+    for (let row of sortedArray) {
+        tBody.append(row)
+    }
+
+    function SortArray(x, y) {
+        if (x.firstElementChild.textContent < y.firstElementChild.textContent) { return -1; }
+        if (x.firstElementChild.textContent > y.firstElementChild.textContent) { return 1; }
+        return 0;
+    }
+
+</script>
+
+</html>
