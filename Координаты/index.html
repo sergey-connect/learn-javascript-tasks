@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #example {
+            width: 300px;
+            height: 200px;
+            overflow: auto;
+            border: 25px solid #E8C48F;
+            padding: 20px;
+        }
+
+        .key {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #field {
+            width: 200px;
+            border: 10px groove black;
+            background-color: #00FF00;
+            position: relative;
+        }
+
+        #ball {
+            position: absolute;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div id="example">
+        <h3>Introduction</h3>
+        <p>This Ecma Standard is based on several originating technologies, the most well known being JavaScript
+            (Netscape) and JScript (Microsoft). The language was invented by Brendan Eich at Netscape and first appeared
+            in that company's Navigator 2.0 browser.
+            It has appeared in all subsequent browsers from Netscape and in all browsers from Microsoft starting with
+            Internet Explorer 3.0. The development of this Standard started in November 1996. The first edition of this
+            Ecma Standard was adopted by the
+            Ecma General Assembly of June 1997.</p>
+
+        <p>That Ecma Standard was submitted to ISO/IEC JTC 1 for adoption under the fast-track procedure, and approved
+            as international standard ISO/IEC 16262, in April 1998. The Ecma General Assembly of June 1998 approved the
+            second edition of ECMA-262 to keep
+            it fully aligned with ISO/IEC 16262. Changes between the first and the second edition are editorial in
+            nature.</p>
+
+        <p>The third edition of the Standard introduced powerful regular expressions, better string handling, new
+            control statements, try/catch exception handling, tighter definition of errors, formatting for numeric
+            output and minor changes in anticipation
+            of forthcoming internationalisation facilities and future language growth. The third edition of the
+            ECMAScript standard was adopted by the Ecma General Assembly of December 1999 and published as ISO/IEC
+            16262:2002 in June 2002.</p>
+
+    </div>
+
+    <div id="field">
+        <img src="https://en.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . .
+    </div>
+
+    <script>
+        /*
+        Найти размер прокрутки снизу
+        важность: 5
+        Свойство elem.scrollTop содержит размер прокрученной области при отсчёте сверху. 
+        А как подсчитать размер прокрутки снизу (назовём его scrollBottom)?
+
+        Напишите соответствующее выражение для произвольного элемента elem.
+
+        P.S. Проверьте: если прокрутки нет вообще или элемент полностью прокручен – оно должно давать 0.
+        */
+
+        example.onclick = () => console.log((example.scrollHeight - example.scrollTop - example.clientHeight))
+
+        /*
+        Узнать ширину полосы прокрутки
+        важность: 3
+        Напишите код, который возвращает ширину стандартной полосы прокрутки.
+
+        Для Windows она обычно колеблется от 12px до 20px. 
+        Если браузер не выделяет место под полосу прокрутки (так тоже бывает, она может быть прозрачной над текстом), 
+        тогда значение может быть 0px.
+
+        P.S. Ваш код должен работать в любом HTML-документе, независимо от его содержимого.
+        */
+
+        function getScrollWidth() {
+            let smallEl = document.createElement('div')
+            smallEl.style.height = '100px'
+            smallEl.style.width = '200px'
+            smallEl.style.overflow = 'auto'
+            smallEl.innerHTML = `Узнать ширину полосы прокрутки
+            важность: 3
+            Напишите код, который возвращает ширину стандартной полосы прокрутки.
+
+            Для Windows она обычно колеблется от 12px до 20px. 
+            Если браузер не выделяет место под полосу прокрутки(так тоже бывает, она может быть прозрачной над текстом),
+            тогда значение может быть 0px.
+
+             P.S.Ваш код должен работать в любом HTML - документе, независимо от его содержимого.`
+            document.body.append(smallEl)
+            let scrollWidth = smallEl.offsetWidth - smallEl.clientWidth
+            console.log(scrollWidth);
+            smallEl.remove()
+        }
+
+        getScrollWidth()
+
+        /*
+        Каковы координаты центра поля?
+
+        Вычислите их и используйте, чтобы поместить мяч в центр поля:
+
+
+        Элемент должен позиционироваться за счёт JavaScript, а не CSS.
+        Код должен работать с любым размером мяча (10, 20, 30 пикселей) и любым размером поля без привязки к исходным значениям.
+        */
+
+        ball.style.top = field.clientHeight / 2 - ball.clientWidth / 2 + 'px'
+        ball.style.left = field.clientWidth / 2 - ball.clientWidth / 2 + 'px'
+
+        // ============
+
+        const field = document.getElementById('field')
+        let fieldCoordinates = field.getBoundingClientRect()
+        let leftTop = `${fieldCoordinates.x}:${fieldCoordinates.y}`
+        let rightBot = `${fieldCoordinates.right}:${fieldCoordinates.bottom}`
+        let leftTopIn = `${fieldCoordinates.x + field.clientTop}:${fieldCoordinates.y + field.clientTop}`
+        let rightBotIn = `${fieldCoordinates.right - field.clientTop}:${fieldCoordinates.bottom - field.clientTop}`
+        alert(rightBotIn)
+
+        // =================
+
+        /**
+     * Позиционирует элемент elem относительно элемента anchor в соответствии со значением position.
+     *
+     * @param {Node} anchor     элемент, около которого позиционируется другой элемент
+     * @param {string} position одно из: top/right/bottom
+     * @param {Node} elem       элемент, который позиционируется
+     *
+     * Оба элемента elem и anchor должны присутствовать в документе
+     */
+        function positionAt(anchor, position, elem) {
+            // ... ваш код ...
+
+            elem.style.position = 'absolute'
+
+            let coordinates = anchor.getBoundingClientRect()
+            let x = coordinates.x
+            let y = coordinates.y
+
+            switch (position) {
+                case 'top': y = y - elem.offsetHeight; break;
+                case 'right': x = x + coordinates.width; break;
+                case 'bottom': y = y + coordinates.height; break;
+                case "top-in":
+                    elem.style.left = coordinates.left + "px";
+                    elem.style.top = coordinates.top + "px";
+                    break;
+
+                case "right-in":
+                    elem.style.left = coordinates.left + anchor.offsetWidth - elem.offsetWidth + "px";
+                    elem.style.top = coordinates.top + "px";
+                    break;
+
+                case "bottom-in":
+                    elem.style.left = coordinates.left + "px";
+                    elem.style.top = coordinates.top + anchor.offsetHeight - elem.offsetHeight + "px";
+                    break;
+            }
+
+            elem.style.cssText = `top: ${y}px; left: ${x}px`
+
+        }
+
+        /**
+         * Показывает заметку с заданным содержимым на заданной позиции
+         * относительно элемента anchor.
+         */
+        function showNote(anchor, position, html) {
+            let note = document.createElement('div');
+            note.className = "note";
+            note.innerHTML = html;
+            document.body.append(note);
+
+            positionAt(anchor, position, note);
+        }
+
+        // test it
+        let blockquote = document.querySelector('blockquote');
+
+        showNote(blockquote, "top", "note above");
+        showNote(blockquote, "right", "note at the right");
+        showNote(blockquote, "bottom", "note below");
+
+    </script>
+
+</body>
+
+</html>
