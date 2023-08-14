@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #example {
+            width: 300px;
+            height: 200px;
+            overflow: auto;
+            border: 25px solid #E8C48F;
+            padding: 20px;
+        }
+
+        .key {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #field {
+            width: 200px;
+            height: 150px;
+            border: 10px solid black;
+            background-color: #00FF00;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #ball {
+            position: absolute;
+            transition: 1s all;
+        }
+
+        #title {
+            cursor: pointer;
+        }
+
+        #open,
+        #close {
+            color: green;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        body {
+            margin: 10px auto;
+            width: 470px;
+        }
+
+        h3 {
+            margin: 0;
+            padding-bottom: .3em;
+            font-size: 1.1em;
+        }
+
+        p {
+            margin: 0;
+            padding: 0 0 .5em;
+        }
+
+        .pane {
+            background: #edf5e1;
+            padding: 10px 20px 10px;
+            border-top: solid 2px #c4df9b;
+            position: relative;
+        }
+
+        .remove-button {
+            font-size: 110%;
+            color: darkred;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 398px;
+            padding: 10px 40px;
+            border: 1px solid #CCC;
+            border-radius: 15px;
+            background: #eee;
+        }
+
+        .carousel img {
+            width: 130px;
+            height: 130px;
+            /* делаем этот элемент блочным, чтобы убрать лишнее пространство вокруг картинок */
+            display: block;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 60px;
+            padding: 0;
+            background: #ddd;
+            border-radius: 15px;
+            border: 1px solid gray;
+            font-size: 24px;
+            line-height: 24px;
+            color: #444;
+            display: block;
+        }
+
+        .arrow:focus {
+            outline: none;
+        }
+
+        .arrow:hover {
+            background: #ccc;
+            cursor: pointer;
+        }
+
+        .prev {
+            left: 7px;
+        }
+
+        .next {
+            right: 7px;
+        }
+
+        .prev {
+            left: 7px;
+        }
+
+        .next {
+            right: 7px;
+        }
+
+        .gallery {
+            width: 390px;
+            overflow: hidden;
+        }
+
+        .gallery ul {
+            height: 130px;
+            width: 9999px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            transition: margin-left 250ms;
+            /* удаляем пустое пространство между элементами li, у которых установлен inline-block */
+            /* http://davidwalsh.name/remove-whitespace-inline-block */
+            font-size: 0;
+        }
+
+        .gallery li {
+            display: inline-block;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <input type="button" id="btn" value="Нажмите, чтобы скрыть">
+
+    Нажмите на поле для перемещения мяча.
+    <br> Мяч не должен выходить за границы поля.
+
+
+    <div id="field">
+        <img src="https://ru.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . .
+    </div>
+
+    <div>
+        <span id="title"><span id="open"> ▶ </span><span id="close"> ▼ </span>Сладости (нажми меня)!</span>
+        <ul id="list">
+            <li>Пирожное</li>
+            <li>Пончик</li>
+            <li>Мёд</li>
+        </ul>
+    </div>
+
+    <div>
+        <div class="pane">
+            <h3>Лошадь</h3><button class="remove-button">[x]</button>
+            <p>Домашняя лошадь — животное семейства непарнокопытных, одомашненный и единственный сохранившийся подвид
+                дикой лошади, вымершей в дикой природе, за исключением небольшой популяции лошади Пржевальского.</p>
+        </div>
+        <div class="pane">
+            <h3>Осёл</h3><button class="remove-button">[x]</button>
+            <p>Домашний осёл (лат. Equus asinus asinus), или ишак, — одомашненный подвид дикого осла (Equus asinus),
+                сыгравший важную историческую роль в развитии хозяйства и культуры человека и по-прежнему широко в
+                хозяйстве многих развивающихся стран.</p>
+        </div>
+        <div class="pane">
+            <h3>Кошка</h3><button class="remove-button">[x]</button>
+            <p>Кошка, или домашняя кошка (лат. Felis silvestris catus), — домашнее животное, одно из наиболее
+                популярных(наряду с собакой) «животных-компаньонов». Являясь одиночным охотником на грызунов и других
+                мелких животных, кошка — социальное животное, использующее для общения широкий диапазон звуковых
+                сигналов.</p>
+        </div>
+    </div>
+
+    <div id="carousel" class="carousel">
+        <button class="arrow prev">⇦</button>
+        <div class="gallery">
+            <ul>
+                <li><img src="https://ru.js.cx/carousel/1.png"></li>
+                <li><img src="https://ru.js.cx/carousel/2.png"></li>
+                <li><img src="https://ru.js.cx/carousel/3.png"></li>
+                <li><img src="https://ru.js.cx/carousel/4.png"></li>
+                <li><img src="https://ru.js.cx/carousel/5.png"></li>
+                <li><img src="https://ru.js.cx/carousel/6.png"></li>
+                <li><img src="https://ru.js.cx/carousel/7.png"></li>
+                <li><img src="https://ru.js.cx/carousel/8.png"></li>
+                <li><img src="https://ru.js.cx/carousel/9.png"></li>
+                <li><img src="https://ru.js.cx/carousel/10.png"></li>
+            </ul>
+        </div>
+        <button class="arrow next">⇨</button>
+    </div>
+
+
+    <script>
+        const btn = document.getElementById('btn')
+        btn.onclick = function () { this.hidden = 'true' }
+
+        const field = document.getElementById('field')
+        const ball = document.getElementById('ball')
+
+        field.onclick = function (e) {
+            let targetY = e.clientY + window.pageYOffset - ball.height / 2
+            let targetX = e.clientX + window.pageXOffset - ball.width / 2
+            let coordsField = field.getBoundingClientRect()
+
+            if (targetY < coordsField.y + field.clientTop) {
+                targetY = coordsField.y + field.clientTop
+            } else if (targetY > coordsField.y + field.clientHeight - ball.height + field.clientTop) {
+                targetY = coordsField.y + field.clientHeight - ball.height + field.clientTop
+            }
+
+            if (targetX < coordsField.x + field.clientLeft) {
+                targetX = coordsField.x + field.clientLeft
+            } else if (targetX > coordsField.x + field.clientWidth - ball.width + field.clientLeft) {
+                targetX = coordsField.x + field.clientWidth - ball.width + field.clientLeft
+            }
+
+            ball.style.top = targetY + 'px';
+            ball.style.left = targetX + 'px';
+        }
+
+        const list1 = document.getElementById('list')
+        const open = document.getElementById('open')
+        const close = document.getElementById('close')
+        const title = document.getElementById('title')
+        open.classList.toggle('hide')
+        list1.classList.toggle('hide')
+
+        title.onclick = () => {
+            list1.classList.toggle('hide')
+            open.classList.toggle('hide')
+            close.classList.toggle('hide')
+        }
+
+        const removeBtns = document.querySelectorAll('.remove-button')
+        for (removeBtn of removeBtns) {
+            removeBtn.addEventListener('click', function (e) {
+                e.target.parentNode.remove()
+            })
+        }
+
+
+        /* этот код помечает картинки, для удобства разработки */
+        let i = 1;
+        for (let li of carousel.querySelectorAll('li')) {
+            li.style.position = 'relative';
+            li.insertAdjacentHTML('beforeend', `<span style="position:absolute;left:0;top:0">${i}</span>`);
+            i++;
+        }
+
+        /* конфигурация */
+        let width = 130; // ширина картинки
+        let count = 3; // видимое количество изображений
+
+        let list = carousel.querySelector('ul');
+        let listElems = carousel.querySelectorAll('li');
+
+        let position = 0; // положение ленты прокрутки
+
+        carousel.querySelector('.prev').onclick = function () {
+            // сдвиг влево
+            position += width * count;
+            // последнее передвижение влево может быть не на 3, а на 2 или 1 элемент
+            position = Math.min(position, 0)
+            list.style.marginLeft = position + 'px';
+        };
+
+        carousel.querySelector('.next').onclick = function () {
+            // сдвиг вправо
+            position -= width * count;
+            // последнее передвижение вправо может быть не на 3, а на 2 или 1 элемент
+            position = Math.max(position, -width * (listElems.length - count));
+            list.style.marginLeft = position + 'px';
+        };
+    </script>
+
+</body>
+
+</html>
